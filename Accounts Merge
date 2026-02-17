@@ -1,0 +1,61 @@
+class Solution {
+private:
+    vector<int>par,rank;  //O(alpha(n)) - inverse Ackermann function - O(1)
+    int findPar(int i) {
+        if(i==par[i]) return i;
+        return par[i] = findPar(par[i]);
+    }  
+    void unionByRank(int i, int j) {
+        int x = findPar(i), y = findPar(j);
+        if(x==y)return;
+        if(rank[x]>rank[y]) {
+            par[y] = x;
+        } else if(rank[y]>rank[x]) {
+            par[x] = y;
+        } else {
+            par[x] = y;
+            rank[y]++;
+        }
+    }
+public:
+    vector<vector<string>> accountsMerge(vector<vector<string>>& accounts) {
+        unordered_map<string, int>mailToNode;
+        int n = accounts.size();
+        par.resize(n);
+        rank.assign(n,0);
+        for(int i = 0; i < n; i++) { //O(n)
+            par[i] = i;
+        }
+        for(int i = 0; i < n; i++) {  //O(M) M - total number of mails
+            for(int j = 1; j < accounts[i].size(); j++) { 
+                string mail = accounts[i][j];
+                if(!mailToNode.count(mail)) {
+                    mailToNode[mail] = i;
+                } else {
+                    unionByRank(i, mailToNode[mail]);
+                }
+            }
+        }
+        vector<vector<string>>mails(n); 
+        for(auto &mtn: mailToNode) {
+            int par = findPar(mtn.second);
+            string mail = mtn.first;
+            mails[par].push_back(mail);
+        }
+        vector<vector<string>>ans;
+        for(int i = 0; i < n; i++) {
+            if(mails[i].empty()) continue;
+            vector<string>temp;
+            temp.push_back(accounts[i][0]);
+            sort(begin(mails[i]), end(mails[i])); //O(MlogM)
+            for(auto &m: mails[i]) {
+                temp.push_back(m);
+            }
+            ans.push_back(temp);
+        }
+        return ans;
+    }
+};
+
+//O(N+M+MlogM) - TC
+//O(N+M) - SC
