@@ -1,0 +1,69 @@
+class Solution {
+public:
+    vector<string> findRepeatedDnaSequences(string s) {
+        unordered_set<string>vis, pos;
+        int n = s.size();
+        if(n<=10)return {};
+        int r = 10;
+        string curr = s.substr(0, 10);
+        vis.insert(curr);
+        while(r<n) {
+            char ch = s[r];
+            curr.push_back(ch);
+            curr.erase(curr.begin());
+            if(vis.count(curr))pos.insert(curr);
+            else vis.insert(curr);
+            r++;
+        }
+        vector<string>ans;
+        for(auto it: pos) {
+            ans.push_back(it);
+        }
+        return ans;
+    }
+};
+
+
+class Solution {
+public:
+    vector<string> findRepeatedDnaSequences(string s) {
+
+        int n = s.size();
+        if (n < 10) return {};
+
+        // map DNA chars to 2-bit values
+        unordered_map<char, int> mp = {
+            {'A', 0}, {'C', 1}, {'G', 2}, {'T', 3}
+        };
+
+        unordered_set<int> seen;     // stores hashes seen once
+        unordered_set<string> res;   // stores repeated sequences
+
+        int hash = 0;
+
+        // build hash for first 9 characters
+        for (int i = 0; i < 9; i++) {
+            hash = (hash << 2) | mp[s[i]];
+        }
+
+        // mask to keep only last 20 bits (10 chars × 2 bits)
+        int mask = (1 << 20) - 1;
+
+        // sliding window
+        for (int i = 9; i < n; i++) {
+
+            // shift left and add new character
+            hash = ((hash << 2) | mp[s[i]]) & mask;
+
+            // if hash seen before → repeated sequence
+            if (seen.count(hash)) {
+                res.insert(s.substr(i - 9, 10));
+            }
+            else {
+                seen.insert(hash);
+            }
+        }
+
+        return vector<string>(res.begin(), res.end());
+    }
+};
