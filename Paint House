@@ -1,0 +1,25 @@
+class Solution {
+public:
+    int minCost(vector<vector<int>>& costs) {
+        int n = costs.size(), ans = INT_MAX;;
+        vector<vector<int>>dp(n, vector<int>(3,0));
+        for(int i = 0; i < 3; i++) {
+            dp[0][i] = costs[0][i];
+            if(n==1) ans = min(ans, dp[0][i]);
+        }
+        
+        for(int i = 1; i < n; i++) {
+            for(int j = 0; j < 3; j++) {
+                int minDiffCost = INT_MAX;
+                for(int k = 0; k < 3; k++) {
+                    if(j!=k) {
+                        minDiffCost = min(minDiffCost, dp[i-1][k]);
+                    }
+                }
+                dp[i][j] = costs[i][j] + minDiffCost;
+                if(i==n-1) ans = min(ans, dp[i][j]);
+            }
+        }
+        return ans;
+    }
+};
