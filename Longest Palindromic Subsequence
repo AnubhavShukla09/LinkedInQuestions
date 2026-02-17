@@ -1,0 +1,31 @@
+class Solution {
+public:
+    int longestPalindromeSubseq(string s) {
+
+        string revS = s;
+        reverse(revS.begin(), revS.end()); // reverse string
+
+        int n = s.size();
+
+        // dp[i][j] = LCS length of s[0..i-1] and revS[0..j-1]
+        vector<vector<int>> dp(n + 1, vector<int>(n + 1, 0));
+
+        // build LCS table
+        for(int i = 1; i <= n; i++) {
+            for(int j = 1; j <= n; j++) {
+
+                // if characters match → extend palindrome
+                if(s[i - 1] == revS[j - 1]) {
+                    dp[i][j] = 1 + dp[i - 1][j - 1];
+                }
+                // otherwise take best from left or top
+                else {
+                    dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]);
+                }
+            }
+        }
+
+        // final answer = LCS of full strings
+        return dp[n][n];
+    }
+};
