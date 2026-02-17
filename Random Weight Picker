@@ -1,0 +1,18 @@
+class Solution {
+public:
+    vector<int> prefix; // prefix sum array
+    int total = 0;      // total weight
+    Solution(vector<int>& w) {
+        // build prefix sum
+        for(int weight : w) {
+            total += weight;
+            prefix.push_back(total);
+        }
+    }
+    int pickIndex() {
+        // generate random number in range [1, total]
+        int target = rand() % total + 1;
+        // find first index where prefix >= target
+        return lower_bound(prefix.begin(), prefix.end(), target) - prefix.begin();
+    }
+};
