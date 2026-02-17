@@ -1,0 +1,30 @@
+class Solution {
+public:
+    // inorder DFS to maintain k closest values
+    void dfs(TreeNode* node, double target, int k, deque<int>& dq) {
+        if (!node) return;
+        dfs(node->left, target, k, dq);
+        // if we still need values, add directly
+        if (dq.size() < k) {
+            dq.push_back(node->val);
+        }
+        else {
+            // check if current value is closer than the worst (front)
+            if (abs(dq.front() - target) > abs(node->val - target)) {
+                dq.pop_front();          // remove worst
+                dq.push_back(node->val); // add better value
+            }
+            else {
+                // inorder gives increasing values
+                // further values will only be worse → stop traversal
+                return;
+            }
+        }
+        dfs(node->right, target, k, dq);
+    }
+    vector<int> closestKValues(TreeNode* root, double target, int k) {
+        deque<int> dq;      // stores k closest values
+        dfs(root, target, k, dq);
+        return vector<int>(dq.begin(), dq.end());
+    }
+};
