@@ -1,0 +1,46 @@
+/**
+ * // Robot API given
+ * class Robot {
+ * public:
+ *   bool move();
+ *   void turnLeft();
+ *   void turnRight();
+ *   void clean();
+ * };
+ */
+
+class Solution {
+public:
+    set<pair<int,int>> visited; // track visited cells
+    // directions: up, right, down, left
+    vector<vector<int>> dirs = {{-1, 0},{0, 1}, {1, 0},  {0, -1} };
+    // move robot back to previous position (backtracking)
+    void goBack(Robot& robot) {
+        robot.turnRight();
+        robot.turnRight();
+        robot.move();
+        robot.turnRight();
+        robot.turnRight();
+    }
+    // DFS to explore and clean room
+    void dfs(int x, int y, int dir, Robot& robot) {
+        visited.insert({x, y}); // mark visited
+        robot.clean();          // clean current cell
+        // try all 4 directions
+        for(int i = 0; i < 4; i++) {
+            int newDir = (dir + i) % 4; // current facing direction
+            int nx = x + dirs[newDir][0]; // next x
+            int ny = y + dirs[newDir][1]; // next y
+            // if not visited and robot can move forward
+            if(!visited.count({nx, ny}) && robot.move()) {
+                dfs(nx, ny, newDir, robot); // explore next cell
+                goBack(robot); // return to original position
+            }
+            robot.turnRight(); // rotate to next direction
+        }
+    }
+
+    void cleanRoom(Robot& robot) {
+        dfs(0, 0, 0, robot); // start at (0,0) facing up
+    }
+};
