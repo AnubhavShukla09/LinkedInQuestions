@@ -1,0 +1,35 @@
+class Solution {
+public:
+    vector<int> smallestRange(vector<vector<int>>& nums) {  
+        // min heap → {value, list index, element index}
+        priority_queue<vector<int>, vector<vector<int>>, greater<>> minHeap;
+        int currMax = INT_MIN; // track current maximum
+        // push first element from each list
+        for(int i = 0; i < nums.size(); i++) {
+            minHeap.push({nums[i][0], i, 0});
+            currMax = max(currMax, nums[i][0]);
+        }
+        int start = 0, end = INT_MAX; // best range
+        // process while we have one element from each list
+        while(minHeap.size() == nums.size()) {
+            auto curr = minHeap.top();
+            minHeap.pop();
+            int currMin = curr[0];
+            int listIdx = curr[1];
+            int elemIdx = curr[2];
+            // update best range if smaller
+            if(currMax - currMin < end - start) {
+                start = currMin;
+                end = currMax;
+            }
+            // move to next element in same list
+            if(elemIdx + 1 < nums[listIdx].size()) {
+                int nextVal = nums[listIdx][elemIdx + 1];
+                minHeap.push({nextVal, listIdx, elemIdx + 1});
+                // update current max
+                currMax = max(currMax, nextVal);
+            }
+        }
+        return {start, end};
+    }
+};
