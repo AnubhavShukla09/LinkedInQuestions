@@ -1,0 +1,33 @@
+class Solution {
+public:
+    int maxPoints(vector<vector<int>>& points) {
+        int n = points.size();
+        if(n <= 2) return n;
+        int result = 0;
+        // fix each point as starting point
+        for(int i = 0; i < n; i++) {
+            map<pair<int,int>, int> slopeCount; // slope -> count
+            int duplicates = 1; // count same points
+            int currMax = 0;
+            for(int j = i + 1; j < n; j++) {
+                int dx = points[j][0] - points[i][0];
+                int dy = points[j][1] - points[i][1];
+                // if same point
+                if(dx == 0 && dy == 0) {
+                    duplicates++;
+                    continue;
+                }
+                // reduce slope using gcd
+                int g = gcd(dx, dy);
+                dx /= g;
+                dy /= g;
+                // store normalized slope
+                slopeCount[{dx, dy}]++;
+                currMax = max(currMax, slopeCount[{dx, dy]]);
+            }
+            // update global maximum
+            result = max(result, currMax + duplicates);
+        }
+        return result;
+    }
+};
