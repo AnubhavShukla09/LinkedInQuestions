@@ -1,24 +1,27 @@
 class RandomizedCollection {
 public:
+    unordered_map<int, unordered_set<int>>idx;
     vector<int>vec;
-    unordered_map<int, unordered_set<int>>mp;
-    RandomizedCollection() {   
+    int total = 0;
+
+    RandomizedCollection() {
+        
     }
-    bool insert(int val) {
-        bool flag = true;
-        if(mp.count(val))flag = false;
+    
+    void ins(int val) {
         vec.push_back(val);
-        mp[val].insert(vec.size()-1);
-        return flag;
+        idx[val].insert(vec.size()-1);
     }
-    bool remove(int val) {
-        if(!mp.count(val)) return false;
-        int currInd = *mp[val].begin()
+
+    bool insert(int val) {
+        if(idx[val].empty()) { //not present
+            ins(val);
+            return true;
+        }
+        ins(val);
+        return false;
     }
-    int getRandom() {
-        int rind = rand()%vec.size();
-        return vec[rind];
-    }
+    
     bool remove(int val) {
         if(idx[val].empty()) { //not present
             return false;
@@ -33,4 +36,16 @@ public:
         vec.pop_back();
         return true;
     }
+    
+    int getRandom() {
+        return vec[rand()%vec.size()];
+    }
 };
+
+/**
+ * Your RandomizedCollection object will be instantiated and called as such:
+ * RandomizedCollection* obj = new RandomizedCollection();
+ * bool param_1 = obj->insert(val);
+ * bool param_2 = obj->remove(val);
+ * int param_3 = obj->getRandom();
+ */
