@@ -24,3 +24,8 @@ public:
         return ans;
     }
 };
+
+// O(3^n * 4^m)
+// Where:
+// n = number of digits with 3 letters
+// m = number of digits with 4 letters
