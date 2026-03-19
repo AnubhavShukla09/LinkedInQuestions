@@ -21,3 +21,5 @@ public:
         return newRoot;
     }
 };
+// TC - O(n)
+// SC - O(h)
