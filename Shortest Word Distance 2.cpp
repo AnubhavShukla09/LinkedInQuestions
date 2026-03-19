@@ -31,3 +31,7 @@ public:
         return ans;
     }
 };
+// TC -
+// WordDistance(wordsDict) : O(n)
+// shortest(word1, word2)  : O(k1 + k2)
+// SC - O(n)
