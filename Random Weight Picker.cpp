@@ -25,3 +25,8 @@ public:
         return ans; // index with cumulative weight >= target
     }
 };
+// TC -
+// Solution(w) : O(n)
+// pickIndex() : O(log n)
+
+// SC - O(n)
