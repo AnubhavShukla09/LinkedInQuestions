@@ -26,3 +26,5 @@ public:
 };
 // if a know b - a cannot be celebrity
 // if a does not know b - b cannot be celebrity
+// TC - O(n)
+// SC - O(1)
