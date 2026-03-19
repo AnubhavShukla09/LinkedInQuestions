@@ -30,3 +30,5 @@ public:
         return x==n;
     }
 };
+// TC - O(n + pre.size())
+// SC - O(n + pre.size())
