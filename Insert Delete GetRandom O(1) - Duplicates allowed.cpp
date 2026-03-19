@@ -3,16 +3,12 @@ public:
     unordered_map<int, unordered_set<int>>idx;
     vector<int>vec;
     int total = 0;
-
-    RandomizedCollection() {
-        
+    RandomizedCollection() {   
     }
-    
     void ins(int val) {
         vec.push_back(val);
         idx[val].insert(vec.size()-1);
     }
-
     bool insert(int val) {
         if(idx[val].empty()) { //not present
             ins(val);
@@ -21,7 +17,6 @@ public:
         ins(val);
         return false;
     }
-    
     bool remove(int val) {
         if(idx[val].empty()) { //not present
             return false;
@@ -36,16 +31,14 @@ public:
         vec.pop_back();
         return true;
     }
-    
     int getRandom() {
         return vec[rand()%vec.size()];
     }
 };
+// TC -
+// RandomizedCollection() : O(1)
+// insert(val)            : O(1) average
+// remove(val)            : O(1) average
+// getRandom()            : O(1)
 
-/**
- * Your RandomizedCollection object will be instantiated and called as such:
- * RandomizedCollection* obj = new RandomizedCollection();
- * bool param_1 = obj->insert(val);
- * bool param_2 = obj->remove(val);
- * int param_3 = obj->getRandom();
- */
+// SC - O(n)
