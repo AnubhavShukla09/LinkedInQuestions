@@ -27,3 +27,5 @@ public:
        return ans;
    }
 };
+// TC - O(n + reservedSeats.size())
+// SC - O(reservedSeats.size())
