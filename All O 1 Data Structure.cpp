@@ -11,53 +11,39 @@ private:
         list<string> keys;     // keys having this frequency
         // Better choice: unordered_set<string> for O(1) erase
         Node *prev, *next;
-
         Node(int c) : count(c), prev(nullptr), next(nullptr) {}
     };
-    
     // Map to track where each key currently lives
     // key -> pointer to frequency node
     unordered_map<string, Node*> mp;
-
     // Doubly linked list boundaries
     // head -> smallest count side
     // tail -> largest count side
     Node *head, *tail;
-
     // Create a new node with given count after prevNode
     Node* addNodeAfter(Node *prevNode, int count) {
         Node *newNode = new Node(count);
-
         // connect new node in DLL
         newNode->next = prevNode->next;
         newNode->prev = prevNode;
-
         if (prevNode->next)
             prevNode->next->prev = newNode;
-
         prevNode->next = newNode;
-
         // update tail if needed
         if (tail == prevNode)
             tail = newNode;
-
         return newNode;
     }
-
     // Remove a node from DLL if no keys left
     void removeNode(Node *node) {
         node->prev->next = node->next;
-
         if (node->next)
             node->next->prev = node->prev;
-
         // update tail if removing last node
         if (tail == node)
             tail = node->prev;
-
         delete node;
     }
-
 public:
     AllOne() {
         // dummy head (count = 0)
@@ -65,20 +51,16 @@ public:
         head = new Node(0);
         tail = head;
     }
-
     // Increase frequency of key
     void inc(string key) {
         // CASE 1: key does not exist → add with count = 1
         if (mp.find(key) == mp.end()) {
-
             // ensure count=1 node exists after head
             if (head->next == nullptr || head->next->count != 1) {
                 addNodeAfter(head, 1);
             }
-
             // insert key in count=1 bucket
             head->next->keys.push_front(key);
-
             // store location of key
             mp[key] = head->next;
         } 
@@ -86,60 +68,48 @@ public:
             // CASE 2: key exists → increase its count
             Node *curNode = mp[key];
             int curCount = curNode->count;
-
             // ensure next bucket with count+1 exists
             if (curNode->next == nullptr || curNode->next->count != curCount + 1) {
                 addNodeAfter(curNode, curCount + 1);
             }
-
             // move key to next frequency bucket
             curNode->next->keys.push_front(key);
             mp[key] = curNode->next;
-
             // remove key from current bucket
             curNode->keys.remove(key);
-
             // delete bucket if empty
             if (curNode->keys.empty())
                 removeNode(curNode);
         }
     }
-
     // Decrease frequency of key
     void dec(string key) {
         Node *curNode = mp[key];
         int curCount = curNode->count;
-
         // remove key from current bucket
         curNode->keys.remove(key);
-
         // if count becomes 0 → remove key completely
         if (curCount == 1) {
             mp.erase(key);
         } 
         else {
             // move key to count-1 bucket
-
             // ensure previous bucket exists
             if (curNode->prev == head || curNode->prev->count != curCount - 1) {
                 addNodeAfter(curNode->prev, curCount - 1);
             }
-
             curNode->prev->keys.push_front(key);
             mp[key] = curNode->prev;
         }
-
         // remove bucket if no keys left
         if (curNode->keys.empty())
             removeNode(curNode);
     }
-
     // Return any key with maximum count
     // max count always at tail
     string getMaxKey() {
         return (tail == head) ? "" : tail->keys.front();
     }
-
     // Return any key with minimum count
     // min count always at head->next
     string getMinKey() {
