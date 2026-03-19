@@ -1,15 +1,11 @@
 class Solution {
 public:
     vector<vector<int>> merge(vector<vector<int>>& intervals) {
-
         // sort intervals by start time
         sort(intervals.begin(), intervals.end());
-
         vector<vector<int>> res;
-
         // iterate through intervals
         for(auto &interval : intervals) {
-
             // if result empty OR no overlap → add new interval
             if(res.empty() || interval[0] > res.back()[1]) {
                 res.push_back(interval);
@@ -19,7 +15,6 @@ public:
                 res.back()[1] = max(res.back()[1], interval[1]);
             }
         }
-
         return res;
     }
 };
