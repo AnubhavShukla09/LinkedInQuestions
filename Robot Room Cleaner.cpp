@@ -11,7 +11,7 @@
 
 class Solution {
 public:
-    set<pair<int,int>> visited; // track visited cells
+    unordered_set<pair<int,int>> visited; // track visited cells
     // directions: up, right, down, left
     vector<vector<int>> dirs = {{-1, 0},{0, 1}, {1, 0},  {0, -1} };
     // move robot back to previous position (backtracking)
@@ -44,3 +44,6 @@ public:
         dfs(0, 0, 0, robot); // start at (0,0) facing up
     }
 };
+
+// TC - O(N)
+// SC - O(N)
