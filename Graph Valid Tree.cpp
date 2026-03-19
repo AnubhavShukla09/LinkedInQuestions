@@ -41,3 +41,5 @@ public:
         return true;
     }
 };
+// TC - O(n + edges.size() * α(n))
+// SC - O(n)
