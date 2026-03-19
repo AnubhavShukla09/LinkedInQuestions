@@ -30,3 +30,8 @@ public:
         }
     }
 };
+// TC -
+// LRUCache(capacity) : O(1)
+// get(key)           : O(1) average
+// put(key, value)    : O(1) average
+// SC - O(capacity)
