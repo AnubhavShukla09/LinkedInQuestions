@@ -30,4 +30,11 @@ public:
         return maxVal;
     }
 };
-TC - O()
+// TC -
+// MaxStack()   : O(1)
+// push(x)      : O(log n)
+// pop()        : O(log n)
+// top()        : O(1)
+// peekMax()    : O(1)
+// popMax()     : O(log n)
+// SC - O(n)
