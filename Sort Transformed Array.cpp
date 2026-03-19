@@ -35,3 +35,5 @@ private:
         return a * x * x + b * x + c;                          // Apply quadratic function
     }
 };
+// TC - O(n)
+// SC - O(n)
